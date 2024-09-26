@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="ja" class="scroll-smooth">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>
+            株式会社デントピア - 歯科用機器開発のリーディングカンパニー
+        </title>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script>
+            tailwind.config = {
+                theme: {
+                    extend: {
+                        colors: {
+                            "dentpia-green": "#009900",
+                            "dentpia-dark": "#007700",
+                        },
+                    },
+                },
+            };
+        </script>
+        <style>
+            @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&display=swap");
+            body {
+                font-family: "Noto Sans JP", sans-serif;
+            }
+            [x-cloak] {
+                display: none !important;
+            }
+            .scroll-margin-top {
+                scroll-margin-top: var(--scroll-padding, 5rem);
+            }
+        </style>
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/alpinejs/2.8.2/alpine.js"
+            defer
+        ></script>
+    </head>
+    <body x-data="navigation()" x-init="init()" class="font-sans bg-gray-50">
+        <header
+            class="bg-white shadow-md fixed w-full z-20 transition-all duration-300"
+            x-data="navigation()"
+            x-init="init()"
+            @scroll.window="handleScroll()"
+            :class="{'py-4': !isScrolled, 'py-2': isScrolled}"
+        >
+            <nav class="container mx-auto px-6">
+                <div class="flex justify-between items-center">
+                    <a
+                        href="#top"
+                        class="flex items-center"
+                        @click.prevent="smoothScroll('top')"
+                    >
+                        <img
+                            src="images/dentpia.png"
+                            alt="デントピアロゴ"
+                            class="h-12 mr-3"
+                        />
+                    </a>
+
+                    <button
+                        @click="toggleMenu()"
+                        class="md:hidden focus:outline-none z-30 relative"
+                    >
+                        <svg
+                            class="w-8 h-8"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                            xmlns="http://www.w3.org/2000/svg"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M4 6h16M4 12h16M4 18h16"
+                            ></path>
+                        </svg>
+                    </button>
+
+                    <div class="hidden md:flex items-center space-x-8">
+                        <a
+                            href="#top"
+                            @click.prevent="smoothScroll('top')"
+                            class="text-gray-800 hover:text-dentpia-green transition duration-300 text-lg"
+                            >トップ</a
+                        >
+                        <a
+                            href="#about"
+                            @click.prevent="smoothScroll('about')"
+                            class="text-gray-800 hover:text-dentpia-green transition duration-300 text-lg"
+                            >会社概要</a
+                        >
+                        <a
+                            href="#products"
+                            @click.prevent="smoothScroll('products')"
+                            class="text-gray-800 hover:text-dentpia-green transition duration-300 text-lg"
+                            >製品案内</a
+                        >
+                        <a
+                            href="#contact"
+                            @click.prevent="smoothScroll('contact')"
+                            class="text-gray-800 hover:text-dentpia-green transition duration-300 text-lg"
+                            >お問い合わせ</a
+                        >
+                    </div>
+                </div>
+
+                <!-- モバイルメニュー -->
+                <div
+                    class="md:hidden fixed inset-0 bg-gray-800 bg-opacity-50 z-40"
+                    x-show="isOpen"
+                    x-transition:enter="transition ease-out duration-300"
+                    x-transition:enter-start="opacity-0"
+                    x-transition:enter-end="opacity-100"
+                    x-transition:leave="transition ease-in duration-300"
+                    x-transition:leave-start="opacity-100"
+                    x-transition:leave-end="opacity-0"
+                    @click.away="closeMenu()"
+                    x-cloak
+                >
+                    <div
+                        class="fixed right-0 top-0 bottom-0 w-64 bg-white shadow-lg transform transition-transform duration-300 ease-in-out z-50"
+                        :class="{ 'translate-x-0': isOpen, 'translate-x-full': !isOpen }"
+                    >
+                        <div class="p-6">
+                            <div class="flex justify-between items-center mb-8">
+                                <img
+                                    src="images/dentpia.png"
+                                    alt="デントピアロゴ"
+                                    class="h-10"
+                                />
+                                <button
+                                    @click="closeMenu()"
+                                    class="text-gray-500 hover:text-gray-800"
+                                >
+                                    <svg
+                                        class="w-6 h-6"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                    >
+                                        <path
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            stroke-width="2"
+                                            d="M6 18L18 6M6 6l12 12"
+                                        ></path>
+                                    </svg>
+                                </button>
+                            </div>
+                            <div class="flex flex-col space-y-4">
+                                <a
+                                    href="#top"
+                                    @click.prevent="smoothScroll('top'); closeMenu()"
+                                    class="text-gray-800 hover:text-dentpia-green transition duration-300 text-lg"
+                                    >トップ</a
+                                >
+                                <a
+                                    href="#about"
+                                    @click.prevent="smoothScroll('about'); closeMenu()"
+                                    class="text-gray-800 hover:text-dentpia-green transition duration-300 text-lg"
+                                    >会社概要</a
+                                >
+                                <a
+                                    href="#products"
+                                    @click.prevent="smoothScroll('products'); closeMenu()"
+                                    class="text-gray-800 hover:text-dentpia-green transition duration-300 text-lg"
+                                    >製品案内</a
+                                >
+                                <a
+                                    href="#contact"
+                                    @click.prevent="smoothScroll('contact'); closeMenu()"
+                                    class="text-gray-800 hover:text-dentpia-green transition duration-300 text-lg"
+                                    >お問い合わせ</a
+                                >
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+        </header>
+
+        <main>
+            <!-- トップセクション（波デザイン付き） -->
+            <section
+                id="top"
+                class="relative bg-dentpia-green text-white py-32 overflow-hidden scroll-margin-top"
+            >
+                <div class="container mx-auto px-6 relative z-10">
+                    <div class="md:flex md:items-center md:justify-between">
+                        <div class="md:w-1/2">
+                            <h1
+                                class="text-4xl md:text-6xl font-bold mb-4 leading-tight"
+                            >
+                                株式会社デントピア
+                            </h1>
+                            <p class="text-xl md:text-2xl mb-8 leading-relaxed">
+                                歯科医療の未来を創造し、<br
+                                    class="hidden md:inline"
+                                />
+                                健康な笑顔を世界中に
+                            </p>
+                            <div class="flex flex-wrap gap-4">
+                                <a
+                                    href="#about"
+                                    @click.prevent="smoothScroll('about')"
+                                    class="bg-white text-dentpia-green font-bold py-3 px-6 rounded-full hover:bg-gray-100 transition duration-300 shadow-lg transform hover:scale-105"
+                                >
+                                    詳しく見る
+                                </a>
+                                <a
+                                    href="#products"
+                                    @click.prevent="smoothScroll('products')"
+                                    class="bg-dentpia-dark text-white font-bold py-3 px-6 rounded-full hover:bg-opacity-90 transition duration-300 shadow-lg transform hover:scale-105"
+                                >
+                                    製品を探す
+                                </a>
+                            </div>
+                        </div>
+                        <div class="hidden md:block md:w-1/2 mt-8 md:mt-0">
+                            <img
+                                src="https://picsum.photos/600/400?random=3"
+                                alt="最新の歯科技術"
+                                class="rounded-lg shadow-2xl transform -rotate-3 hover:rotate-0 transition duration-300"
+                            />
+                        </div>
+                    </div>
+                </div>
+                <div class="absolute bottom-0 left-0 right-0">
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 1440 320"
+                        class="w-full h-auto"
+                    >
+                        <path
+                            fill="#f9fafb"
+                            fill-opacity="1"
+                            d="M0,96L48,112C96,128,192,160,288,154.7C384,149,480,107,576,90.7C672,75,768,85,864,117.3C960,149,1056,203,1152,208C1248,213,1344,171,1392,149.3L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"
+                        ></path>
+                    </svg>
+                </div>
+            </section>
+            <!-- 会社概要セクション -->
+            <section id="about" class="py-20 scroll-margin-top bg-white">
+                <div class="container mx-auto px-6">
+                    <h2
+                        class="text-4xl font-bold text-gray-800 mb-12 text-center"
+                    >
+                        会社概要
+                    </h2>
+                    <div
+                        class="bg-gray-50 rounded-xl shadow-lg overflow-hidden"
+                    >
+                        <div class="md:flex">
+                            <div
+                                class="md:w-1/2 p-8 md:p-12 bg-dentpia-green text-white"
+                            >
+                                <h3 class="text-2xl font-semibold mb-4">
+                                    私たちのビジョン
+                                </h3>
+                                <p class="text-lg leading-relaxed">
+                                    株式会社デントピアは、お客様の声を大切にし、皆様のお役に立つ機器を開発することで、社会に貢献し、ともに成長し、リードできる存在になりたいと考えております。
+                                </p>
+                                <div class="mt-8">
+                                    <h4 class="text-xl font-semibold mb-3">
+                                        事業内容
+                                    </h4>
+                                    <ul class="space-y-2">
+                                        <li class="flex items-center">
+                                            <svg
+                                                class="w-5 h-5 mr-2"
+                                                fill="currentColor"
+                                                viewBox="0 0 20 20"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                            >
+                                                <path
+                                                    fill-rule="evenodd"
+                                                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                                    clip-rule="evenodd"
+                                                ></path>
+                                            </svg>
+                                            歯科用機器の開発・製造・販売
+                                        </li>
+                                        <li class="flex items-center">
+                                            <svg
+                                                class="w-5 h-5 mr-2"
+                                                fill="currentColor"
+                                                viewBox="0 0 20 20"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                            >
+                                                <path
+                                                    fill-rule="evenodd"
+                                                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                                    clip-rule="evenodd"
+                                                ></path>
+                                            </svg>
+                                            歯科医療のデジタル化支援
+                                        </li>
+                                        <li class="flex items-center">
+                                            <svg
+                                                class="w-5 h-5 mr-2"
+                                                fill="currentColor"
+                                                viewBox="0 0 20 20"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                            >
+                                                <path
+                                                    fill-rule="evenodd"
+                                                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                                    clip-rule="evenodd"
+                                                ></path>
+                                            </svg>
+                                            歯科医療機器の保守・メンテナンス
+                                        </li>
+                                        <li class="flex items-center">
+                                            <svg
+                                                class="w-5 h-5 mr-2"
+                                                fill="currentColor"
+                                                viewBox="0 0 20 20"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                            >
+                                                <path
+                                                    fill-rule="evenodd"
+                                                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                                    clip-rule="evenodd"
+                                                ></path>
+                                            </svg>
+                                            歯科医療従事者向け教育・トレーニング
+                                        </li>
+                                        <li class="flex items-center">
+                                            <svg
+                                                class="w-5 h-5 mr-2"
+                                                fill="currentColor"
+                                                viewBox="0 0 20 20"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                            >
+                                                <path
+                                                    fill-rule="evenodd"
+                                                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                                    clip-rule="evenodd"
+                                                ></path>
+                                            </svg>
+                                            歯科材料の研究開発・販売
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="md:w-1/2 p-8 md:p-12">
+                                <h3
+                                    class="text-2xl font-semibold mb-6 text-gray-800"
+                                >
+                                    企業情報
+                                </h3>
+                                <div class="space-y-4">
+                                    <div class="flex items-center">
+                                        <svg
+                                            class="w-6 h-6 text-dentpia-green mr-3"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            viewBox="0 0 24 24"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                        >
+                                            <path
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                stroke-width="2"
+                                                d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
+                                            ></path>
+                                        </svg>
+                                        <div>
+                                            <span class="font-semibold"
+                                                >名称：</span
+                                            >株式会社デントピア
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <svg
+                                            class="w-6 h-6 text-dentpia-green mr-3"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            viewBox="0 0 24 24"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                        >
+                                            <path
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                stroke-width="2"
+                                                d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                                            ></path>
+                                        </svg>
+                                        <div>
+                                            <span class="font-semibold"
+                                                >設立：</span
+                                            >昭和５８年９月
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <svg
+                                            class="w-6 h-6 text-dentpia-green mr-3"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            viewBox="0 0 24 24"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                        >
+                                            <path
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                stroke-width="2"
+                                                d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                                            ></path>
+                                        </svg>
+                                        <div>
+                                            <span class="font-semibold"
+                                                >代表者：</span
+                                            >代表取締役社長 大石裕之
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <svg
+                                            class="w-6 h-6 text-dentpia-green mr-3"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            viewBox="0 0 24 24"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                        >
+                                            <path
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                stroke-width="2"
+                                                d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                                            ></path>
+                                            <path
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                stroke-width="2"
+                                                d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                                            ></path>
+                                        </svg>
+                                        <div>
+                                            <span class="font-semibold"
+                                                >所在地：</span
+                                            >〒123-4567 東京都○○区△△町1-2-3
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <svg
+                                            class="w-6 h-6 text-dentpia-green mr-3"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            viewBox="0 0 24 24"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                        >
+                                            <path
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                stroke-width="2"
+                                                d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                                            ></path>
+                                        </svg>
+                                        <div>
+                                            <span class="font-semibold"
+                                                >資本金：</span
+                                            >1億円
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <svg
+                                            class="w-6 h-6 text-dentpia-green mr-3"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            viewBox="0 0 24 24"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                        >
+                                            <path
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                stroke-width="2"
+                                                d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
+                                            ></path>
+                                        </svg>
+                                        <div>
+                                            <span class="font-semibold"
+                                                >従業員数：</span
+                                            >150名（2024年4月現在）
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 製品案内セクション -->
+            <section id="products" class="py-20 scroll-margin-top bg-gray-50">
+                <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                    <h2
+                        class="text-4xl font-bold text-gray-800 mb-12 text-center"
+                    >
+                        製品案内
+                    </h2>
+
+                    <!-- For Clinics -->
+                    <div class="mb-16">
+                        <h3
+                            class="text-3xl font-bold text-gray-800 mb-8 text-center"
+                        >
+                            For Clinics
+                        </h3>
+                        <div class="grid md:grid-cols-2 gap-8">
+                            <div
+                                class="bg-white rounded-xl shadow-lg overflow-hidden transform transition duration-300 hover:scale-105"
+                            >
+                                <img
+                                    src="https://picsum.photos/800/400?random=1"
+                                    alt="ユービゾンシリーズ"
+                                    class="w-full h-64 object-cover"
+                                />
+                                <div class="p-6">
+                                    <h4
+                                        class="text-2xl font-semibold mb-3 text-dentpia-green"
+                                    >
+                                        ユービゾンシリーズ
+                                    </h4>
+                                    <p class="text-gray-600 mb-4">
+                                        患者さんへのちょっとした思いやり。医院の清潔イメージを高めます。UV(除菌)＋オゾン(脱臭・除菌)＋ファン(乾燥)によりスリッパを清潔に保管。省エネ仕様になりました！
+                                    </p>
+                                    <ul
+                                        class="list-disc list-inside mb-4 text-gray-700"
+                                    >
+                                        <li>UV除菌</li>
+                                        <li>オゾン脱臭・除菌</li>
+                                        <li>ファンによる乾燥</li>
+                                        <li>省エネ設計</li>
+                                    </ul>
+                                    <a
+                                        href="#"
+                                        class="inline-block bg-dentpia-green text-white font-semibold py-2 px-4 rounded-lg hover:bg-dentpia-dark transition duration-300"
+                                        >詳細を見る</a
+                                    >
+                                </div>
+                            </div>
+                            <div
+                                class="bg-white rounded-xl shadow-lg overflow-hidden transform transition duration-300 hover:scale-105"
+                            >
+                                <img
+                                    src="https://picsum.photos/800/400?random=2"
+                                    alt="ゲルムイーター"
+                                    class="w-full h-64 object-cover"
+                                />
+                                <div class="p-6">
+                                    <h4
+                                        class="text-2xl font-semibold mb-3 text-dentpia-green"
+                                    >
+                                        ゲルムイーター
+                                    </h4>
+                                    <p class="text-gray-600 mb-4">
+                                        二酸化塩素の力で消臭・除菌。ポキッと折ってごみ箱の蓋に貼るだけで嫌な臭いを消し、雑菌の繁殖を抑えます。トリハロメタン等の発がん性物質を生成しないので安心してお使いいただけます。
+                                    </p>
+                                    <ul
+                                        class="list-disc list-inside mb-4 text-gray-700"
+                                    >
+                                        <li>簡単設置</li>
+                                        <li>強力消臭・除菌</li>
+                                        <li>安全性の高い成分</li>
+                                    </ul>
+                                    <a
+                                        href="#"
+                                        class="inline-block bg-dentpia-green text-white font-semibold py-2 px-4 rounded-lg hover:bg-dentpia-dark transition duration-300"
+                                        >詳細を見る</a
+                                    >
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- For Labo -->
+                    <div>
+                        <h3
+                            class="text-3xl font-bold text-gray-800 mb-8 text-center"
+                        >
+                            For Labo
+                        </h3>
+                        <div class="grid md:grid-cols-3 gap-8">
+                            <div
+                                class="bg-white rounded-xl shadow-lg overflow-hidden transform transition duration-300 hover:scale-105"
+                            >
+                                <img
+                                    src="https://picsum.photos/800/400?random=3"
+                                    alt="ミニ・ホローネⅡ"
+                                    class="w-full h-48 object-cover"
+                                />
+                                <div class="p-6">
+                                    <h4
+                                        class="text-xl font-semibold mb-3 text-dentpia-green"
+                                    >
+                                        ミニ・ホローネⅡ / ホローネ・Ｓ
+                                    </h4>
+                                    <p class="text-gray-600 mb-4">
+                                        超小型ピン植立穿孔機。お求め易く省スペース設計で小型のラボ様向け。使用量の多い方はホローネＳをお勧めします。
+                                    </p>
+                                    <a
+                                        href="#"
+                                        class="text-dentpia-green hover:underline"
+                                        >詳細を見る</a
+                                    >
+                                </div>
+                            </div>
+                            <div
+                                class="bg-white rounded-xl shadow-lg overflow-hidden transform transition duration-300 hover:scale-105"
+                            >
+                                <img
+                                    src="https://picsum.photos/800/400?random=4"
+                                    alt="センタートリマーシリーズ"
+                                    class="w-full h-48 object-cover"
+                                />
+                                <div class="p-6">
+                                    <h4
+                                        class="text-xl font-semibold mb-3 text-dentpia-green"
+                                    >
+                                        センタートリマーシリーズ
+                                    </h4>
+                                    <p class="text-gray-600 mb-4">
+                                        発売から20年以上のロングセラーの口蓋部トリミング機器。小型から大型のラボまで、お客様のニーズに答えて進化し続けています。
+                                    </p>
+                                    <a
+                                        href="#"
+                                        class="text-dentpia-green hover:underline"
+                                        >詳細を見る</a
+                                    >
+                                </div>
+                            </div>
+                            <div
+                                class="bg-white rounded-xl shadow-lg overflow-hidden transform transition duration-300 hover:scale-105"
+                            >
+                                <img
+                                    src="https://picsum.photos/800/400?random=5"
+                                    alt="ドクトールシリーズ"
+                                    class="w-full h-48 object-cover"
+                                />
+                                <div class="p-6">
+                                    <h4
+                                        class="text-xl font-semibold mb-3 text-dentpia-green"
+                                    >
+                                        ドクトールシリーズ
+                                    </h4>
+                                    <p class="text-gray-600 mb-4">
+                                        酸元ビン、作業ビンを保管し発生する酸蒸気を吸収。健康と環境を保護します。
+                                    </p>
+                                    <a
+                                        href="#"
+                                        class="text-dentpia-green hover:underline"
+                                        >詳細を見る</a
+                                    >
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- お問い合わせセクション -->
+            <section id="contact" class="py-20 scroll-margin-top bg-white">
+                <div class="container mx-auto px-6 max-w-4xl">
+                    <h2
+                        class="text-4xl font-extrabold text-gray-800 mb-12 text-center"
+                    >
+                        お問い合わせ
+                    </h2>
+                    <div
+                        class="bg-gray-50 rounded-2xl shadow-2xl p-10 transition-all duration-300 hover:shadow-3xl"
+                    >
+                        <form action="#" method="POST" class="space-y-6">
+                            <div class="grid md:grid-cols-2 gap-6">
+                                <div class="relative">
+                                    <input
+                                        type="text"
+                                        id="name"
+                                        name="name"
+                                        required
+                                        class="peer w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:border-dentpia-green placeholder-transparent pt-5 pb-2"
+                                        placeholder="お名前"
+                                    />
+                                    <label
+                                        for="name"
+                                        class="absolute left-0 -top-3.5 text-gray-600 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-dentpia-green peer-focus:text-sm"
+                                        >お名前</label
+                                    >
+                                </div>
+                                <div class="relative">
+                                    <input
+                                        type="email"
+                                        id="email"
+                                        name="email"
+                                        required
+                                        class="peer w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:border-dentpia-green placeholder-transparent pt-5 pb-2"
+                                        placeholder="メールアドレス"
+                                    />
+                                    <label
+                                        for="email"
+                                        class="absolute left-0 -top-3.5 text-gray-600 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-dentpia-green peer-focus:text-sm"
+                                        >メールアドレス</label
+                                    >
+                                </div>
+                            </div>
+                            <div class="relative">
+                                <input
+                                    type="text"
+                                    id="subject"
+                                    name="subject"
+                                    required
+                                    class="peer w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:border-dentpia-green placeholder-transparent pt-5 pb-2"
+                                    placeholder="件名"
+                                />
+                                <label
+                                    for="subject"
+                                    class="absolute left-0 -top-3.5 text-gray-600 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-dentpia-green peer-focus:text-sm"
+                                    >件名</label
+                                >
+                            </div>
+                            <div class="relative">
+                                <textarea
+                                    id="message"
+                                    name="message"
+                                    rows="4"
+                                    required
+                                    class="peer w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:border-dentpia-green placeholder-transparent pt-5 pb-2 resize-none"
+                                    placeholder="お問い合わせ内容"
+                                ></textarea>
+                                <label
+                                    for="message"
+                                    class="absolute left-0 -top-3.5 text-gray-600 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-dentpia-green peer-focus:text-sm"
+                                    >お問い合わせ内容</label
+                                >
+                            </div>
+                            <div>
+                                <button
+                                    type="submit"
+                                    class="w-full bg-dentpia-green text-white font-semibold py-3 px-6 rounded-lg hover:bg-dentpia-dark transition duration-300 transform hover:-translate-y-1 hover:shadow-lg"
+                                >
+                                    送信する
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="bg-gray-800 text-white py-8">
+            <div class="container mx-auto px-6">
+                <div class="flex flex-wrap justify-between items-center">
+                    <div
+                        class="w-full md:w-1/3 text-center md:text-left mb-6 md:mb-0"
+                    >
+                        <img
+                            src="images/dentpia.png"
+                            alt="デントピアロゴ"
+                            class="h-10 mx-auto md:mx-0 mb-4"
+                        />
+                        <p class="text-sm">
+                            最先端の歯科医療技術で、健康な笑顔を創造します。
+                        </p>
+                    </div>
+                    <div class="w-full md:w-1/3 text-center mb-6 md:mb-0">
+                        <h3 class="text-lg font-semibold mb-2">お問い合わせ</h3>
+                        <p>TEL: 03-1234-5678</p>
+                        <p>Email: info@dentpia.co.jp</p>
+                    </div>
+                    <div class="w-full md:w-1/3 text-center md:text-right">
+                        <h3 class="text-lg font-semibold mb-2">リンク</h3>
+                        <ul class="space-y-2">
+                            <li>
+                                <a href="#" class="hover:text-dentpia-green"
+                                    >プライバシーポリシー</a
+                                >
+                            </li>
+                            <li>
+                                <a href="#" class="hover:text-dentpia-green"
+                                    >利用規約</a
+                                >
+                            </li>
+                            <li>
+                                <a href="#" class="hover:text-dentpia-green"
+                                    >サイトマップ</a
+                                >
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="border-t border-gray-700 mt-8 pt-8 text-center">
+                    <p>&copy; 2024 株式会社デントピア. All rights reserved.</p>
+                </div>
+            </div>
+        </footer>
+
+        <script>
+            function navigation() {
+                return {
+                    isOpen: false,
+                    isScrolled: false,
+                    init() {
+                        this.adjustScrollPadding();
+                        window.addEventListener("resize", () =>
+                            this.adjustScrollPadding()
+                        );
+                        window.addEventListener("scroll", () =>
+                            this.handleScroll()
+                        );
+                        this.handleScroll();
+                    },
+                    adjustScrollPadding() {
+                        const header = document.querySelector("header");
+                        const headerHeight = header.offsetHeight;
+                        document.documentElement.style.setProperty(
+                            "--scroll-padding",
+                            `${headerHeight}px`
+                        );
+                    },
+                    handleScroll() {
+                        this.isScrolled = window.pageYOffset > 20;
+                    },
+                    smoothScroll(id) {
+                        const el = document.getElementById(id);
+                        const header = document.querySelector("header");
+                        const headerHeight = header.offsetHeight;
+                        const elementPosition = el.getBoundingClientRect().top;
+                        const offsetPosition =
+                            elementPosition + window.pageYOffset - headerHeight;
+
+                        window.scrollTo({
+                            top: offsetPosition,
+                            behavior: "smooth",
+                        });
+                    },
+                    toggleMenu() {
+                        this.isOpen = !this.isOpen;
+                    },
+                    closeMenu() {
+                        this.isOpen = false;
+                    },
+                };
+            }
+        </script>
+    </body>
+</html>

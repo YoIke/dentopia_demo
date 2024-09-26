@@ -1,0 +1,103 @@
+/* カスタムフォント */
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap");
+
+body {
+  font-family: "Noto Sans JP", sans-serif;
+}
+
+/* ヘッダーのカスタムスタイル */
+header {
+  background: linear-gradient(to right, #3490dc, #6574cd);
+}
+
+header a {
+  transition: color 0.3s ease;
+}
+
+/* メインコンテンツエリアのカスタムスタイル */
+main {
+  min-height: calc(100vh - 200px);
+}
+
+/* フッターのカスタムスタイル */
+footer {
+  background: linear-gradient(to right, #2d3748, #4a5568);
+}
+
+/* ボタンのカスタムスタイル */
+.btn-primary {
+  background-color: #3490dc;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 0.25rem;
+  transition: background-color 0.3s ease;
+}
+
+.btn-primary:hover {
+  background-color: #2779bd;
+}
+
+/* レスポンシブデザインの調整 */
+@media (max-width: 768px) {
+  h1 {
+    font-size: 2rem;
+  }
+
+  .container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  /* モバイルメニューのスタイル */
+  header nav > div > div:last-child {
+    background-color: white;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+      0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  }
+}
+
+/* ハンバーガーメニューのスタイル */
+.mobile-menu {
+  background-color: white;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.mobile-menu a {
+  color: #4a5568;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.mobile-menu a:hover {
+  background-color: #f7fafc;
+  color: #2b6cb0;
+}
+
+/* 画像のレスポンシブ対応 */
+.responsive-image {
+  width: 100%;
+  height: auto;
+  max-height: 400px;
+  object-fit: cover;
+}
+
+/* グリッドレイアウトのレスポンシブ対応 */
+@media (min-width: 640px) {
+  .grid-cols-1 {
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 768px) {
+  .md\:grid-cols-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1024px) {
+  .lg\:grid-cols-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
